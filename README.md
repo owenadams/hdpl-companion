@@ -29,7 +29,7 @@ npm run preview
 
 The production service worker caches the app shell and latest league snapshot for offline use. PWA installation requires HTTPS when hosted publicly; localhost is supported for local testing.
 
-Set `VITE_GEM_URL` in `.env.local` to link directly to the HDPL Gemini Gem. Without it, the app opens the Gemini Gems page.
+The app links to the shared HDPL Gemini Gem by default. Set `VITE_GEM_URL` in `.env.local` only if you want to use a different Gem.
 
 ## GitHub Pages
 
