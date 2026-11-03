@@ -24,6 +24,9 @@
 .updated-label { display: block; margin: 7px 5px 0 19px; color: #849087; font-size: 10px; }
 .main-area { min-width: 0; }
 .topbar { position: sticky; z-index: 2; top: 0; display: flex; justify-content: space-between; align-items: center; min-height: 64px; padding: 0 clamp(20px, 4vw, 56px); background: rgba(251,252,248,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
+.topbar-leading { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.back-button { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 8px; border: 1px solid var(--line); border-radius: 5px; color: #536459; background: white; font-size: 10px; font-weight: 600; }
+.back-button:hover { color: var(--green); border-color: #9ab8a2; background: #f2f8f2; }
 .breadcrumb { display: flex; gap: 10px; align-items: center; color: #839087; font-size: 11px; }
 .breadcrumb strong { color: #34443a; font-weight: 600; }
 .crumb-slash { color: #b0b9b0; }
@@ -233,6 +236,9 @@
   .mobile-source-status { padding-inline: 14px; }
   .mobile-utility-links { padding-inline: 14px; }
   .breadcrumb { gap: 6px; font-size: 9px; }
+  .topbar-leading { gap: 6px; }
+  .back-button { width: 30px; min-width: 30px; justify-content: center; padding: 0; }
+  .back-button span { display: none; }
   .team-picker { gap: 6px; padding-inline: 7px; }
   .picker-label { display: none; }
   .team-picker select { width: 96px; font-size: 10px; }

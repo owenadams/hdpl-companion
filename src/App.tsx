@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  ArrowLeft,
   ArrowUpRight,
   CalendarPlus,
   CalendarDays,
@@ -350,6 +351,7 @@ function App() {
   const [data, setData] = useState<LeagueData | null>(null)
   const [loadError, setLoadError] = useState(false)
   const [view, setView] = useState<View>('home')
+  const [viewHistory, setViewHistory] = useState<View[]>([])
   const [division, setDivision] = useState(1)
   const [competition, setCompetition] = useState<Competition>('money')
   const [favoriteTeam, setFavoriteTeam] = useState(() => localStorage.getItem('hdpl-team') || '')
@@ -452,7 +454,18 @@ function App() {
   }
 
   function openView(nextView: View) {
+    if (nextView !== view) {
+      setViewHistory((history) => [...history, view])
+    }
     setView(nextView)
+    setSearch('')
+  }
+
+  function goBack() {
+    const previousView = viewHistory.at(-1)
+    if (!previousView) return
+    setViewHistory((history) => history.slice(0, -1))
+    setView(previousView)
     setSearch('')
   }
 
@@ -521,7 +534,10 @@ function App() {
 
       <main className="main-area">
         <header className="topbar">
-          <div className="breadcrumb"><span>Havering & District</span><span className="crumb-slash">/</span><strong>{navItems.find((item) => item.id === view)?.label}</strong></div>
+          <div className="topbar-leading">
+            {viewHistory.length > 0 && <button className="back-button" onClick={goBack} aria-label="Back to previous screen" title="Back to previous screen"><ArrowLeft size={16} /><span>Back</span></button>}
+            <div className="breadcrumb"><span>Havering & District</span><span className="crumb-slash">/</span><strong>{navItems.find((item) => item.id === view)?.label}</strong></div>
+          </div>
           <label className="team-picker">
             <span className="picker-label">My team</span>
             <select value={favoriteTeam} onChange={(event) => chooseTeam(event.target.value)} aria-label="Select your team">
