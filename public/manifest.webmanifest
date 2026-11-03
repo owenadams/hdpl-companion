@@ -1,0 +1,18 @@
+{
+  "name": "HDPL League Companion",
+  "short_name": "HDPL",
+  "description": "Fixtures, standings, player stats and team contacts for Havering & District Pool League.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5ef",
+  "theme_color": "#f3f5ef",
+  "icons": [
+    {
+      "src": "./app-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
