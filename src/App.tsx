@@ -104,7 +104,7 @@ type InstallPromptEvent = Event & {
 
 const sourceRoot = 'http://hdpl.x10host.com'
 const gemUrl = import.meta.env.VITE_GEM_URL || 'https://gemini.google.com/gem/1w8F6GkLE9mm3It8JRAn6XVQICKzhMi1N?usp=sharing'
-const gemLinkLabel = 'Ask your Gemini Gem'
+const gemLinkLabel = 'Ask Chatbot'
 const divisionPages = [1, 2, 3]
 const divisionSchedulePath = (division: number) => `fixtures${division}.htm`
 const moneyTablePath = (division: number) => `hdpl_tables_division_${division}.htm`
@@ -555,7 +555,7 @@ function App() {
           {updatedLabel && <span className="mobile-checked">Correct as of {updatedLabel}</span>}
         </div>
         <nav className="mobile-utility-links" aria-label="More league links">
-          <a href={gemUrl} target="_blank" rel="noreferrer"><Sparkles size={15} /><span>Ask your Gemini Gem</span><ArrowUpRight size={14} /></a>
+          <a href={gemUrl} target="_blank" rel="noreferrer"><Sparkles size={15} /><span>Ask Chatbot</span><ArrowUpRight size={14} /></a>
           <button onClick={() => openView('rules')}><CircleHelp size={15} /><span>Rules</span></button>
         </nav>
 
