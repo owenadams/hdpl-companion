@@ -18,7 +18,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 & "c:\Users\owenc\Documents\Owen-AI\HDPL Skill Sync\scripts\update-hdpl-skill.ps1"
 ```
 
-The Windows task refreshes the local Gemini context. The Pages workflow also refreshes the public snapshot and deploys it every Thursday at 12:00 London time, adjusting for GMT/BST.
+The Windows task refreshes the local Gemini context on Thursdays. The Pages workflow refreshes the public snapshot and deploys it daily at 12:00 London time, adjusting for GMT/BST.
 
 ## Production and offline use
 
@@ -33,4 +33,4 @@ The app links to the shared HDPL Gemini Gem by default. Set `VITE_GEM_URL` in `.
 
 ## GitHub Pages
 
-The workflow in `.github/workflows/deploy.yml` builds the app with the repository subpath and deploys it whenever `main` is updated, when manually run, and after the weekly data refresh. In the GitHub repository settings, set Pages deployment to **GitHub Actions**. The resulting URL will be `https://OWNER.github.io/REPOSITORY/`.
+The workflow in `.github/workflows/deploy.yml` builds the app with the repository subpath and deploys it whenever `main` is updated, when manually run, and after each daily data refresh. In the GitHub repository settings, set Pages deployment to **GitHub Actions**. The resulting URL will be `https://OWNER.github.io/REPOSITORY/`.

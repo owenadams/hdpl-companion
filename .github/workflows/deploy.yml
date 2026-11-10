@@ -5,8 +5,8 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '0 11 * * 4'
-    - cron: '0 12 * * 4'
+    - cron: '0 11 * * *'
+    - cron: '0 12 * * *'
 
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
           should_deploy=true
           if [[ "$EVENT_NAME" == "schedule" ]]; then
             offset=$(TZ=Europe/London date +%z)
-            if [[ "$SCHEDULE" == "0 11 * * 4" && "$offset" != "+0100" ]] || [[ "$SCHEDULE" == "0 12 * * 4" && "$offset" != "+0000" ]]; then
+            if [[ "$SCHEDULE" == "0 11 * * *" && "$offset" != "+0100" ]] || [[ "$SCHEDULE" == "0 12 * * *" && "$offset" != "+0000" ]]; then
               should_deploy=false
             fi
           fi
