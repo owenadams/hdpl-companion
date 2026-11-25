@@ -33,6 +33,13 @@
 .team-picker { position: relative; display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; background: white; }
 .picker-label { color: #829087; font-size: 10px; }
 .team-picker select { width: 118px; padding: 0 14px 0 0; color: var(--ink); appearance: none; border: 0; outline: 0; background: transparent; font-size: 11px; font-weight: 700; }
+.team-filter { position: relative; display: flex; align-items: center; gap: 9px; min-height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; background: white; }
+.team-filter span { color: #829087; font-size: 10px; }
+.team-filter select { width: 150px; padding: 0 16px 0 0; color: var(--ink); appearance: none; border: 0; outline: 0; background: transparent; font-size: 11px; font-weight: 700; }
+.team-filter svg { position: absolute; right: 8px; pointer-events: none; color: #829087; }
+.opponent-shortcut { display: flex; align-items: center; gap: 8px; width: min(440px, 100%); min-height: 38px; margin-bottom: 14px; padding: 0 12px; border: 1px solid #b9d3c1; border-radius: 5px; color: #276447; background: #e5f2e9; font-size: 11px; font-weight: 600; text-align: left; }
+.opponent-shortcut span { flex: 1; }
+.opponent-shortcut:hover { background: #d8ecde; }
 .team-picker svg { position: absolute; right: 8px; pointer-events: none; color: #829087; }
 .install-button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; color: #356e50; background: white; font-size: 10px; font-weight: 700; }
 .install-button:hover { border-color: #9ab8a2; background: #f2f8f2; }
@@ -232,6 +239,8 @@
 }
 
 @media (max-width: 560px) {
+  .team-filter { flex: 1; }
+  .team-filter select { width: 100%; }
   .topbar { padding-inline: 14px; }
   .mobile-source-status { padding-inline: 14px; }
   .mobile-utility-links { padding-inline: 14px; }

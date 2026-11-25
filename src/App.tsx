@@ -118,6 +118,11 @@ function teamKey(value: string) {
   return clean(value).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '')
 }
 
+// Player tables say "Legion B" where fixtures say "ROM LEGION 'B'".
+function playerTeamKey(value: string) {
+  return teamKey(value).replace(/^rom(?=legion|snooker)/, '')
+}
+
 function parsePage(page: SourcePage) {
   return new DOMParser().parseFromString(page.html, 'text/html')
 }
@@ -363,6 +368,7 @@ function App() {
   const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null)
   const [isOnline, setIsOnline] = useState(() => navigator.onLine)
   const [search, setSearch] = useState('')
+  const [playerTeam, setPlayerTeam] = useState('')
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/hdpl-pages.json`, { cache: 'no-store' })
@@ -429,9 +435,19 @@ function App() {
   const currentStandings = currentTables?.[activeDivision] || []
   const currentLeader = currentStandings[0]
   const selectedPlayers = competition === 'money' ? data?.moneyPlayers : data?.trophyPlayers
-  const filteredPlayers = (selectedPlayers || []).filter((player) =>
-    player.division === activeDivision && `${player.name} ${player.team}`.toLowerCase().includes(search.toLowerCase()),
-  ).slice(0, 40)
+  const divisionPlayers = (selectedPlayers || []).filter((player) => player.division === activeDivision)
+  const playerTeams = Array.from(new Set(divisionPlayers.map((player) => player.team))).sort((left, right) => left.localeCompare(right))
+  const teamFilter = playerTeams.includes(playerTeam) ? playerTeam : ''
+  const filteredPlayers = divisionPlayers
+    .filter((player) => (!teamFilter || player.team === teamFilter) && `${player.name} ${player.team}`.toLowerCase().includes(search.toLowerCase()))
+    .sort((left, right) => (teamFilter ? right.winRate - left.winRate || right.played - left.played : 0))
+    .slice(0, 40)
+  const opponentName = nextFixture && favoriteTeam
+    ? (teamKey(nextFixture.home) === teamKey(favoriteTeam) ? nextFixture.away : nextFixture.home)
+    : ''
+  const opponentPlayerTeam = opponentName && nextFixture
+    ? data?.moneyPlayers.find((player) => player.division === nextFixture.division && playerTeamKey(player.team) === playerTeamKey(opponentName))?.team
+    : undefined
   const filteredContacts = (data?.contacts || []).filter((contact) =>
     `${contact.team} ${contact.person} ${contact.address}`.toLowerCase().includes(search.toLowerCase()),
   )
@@ -459,6 +475,12 @@ function App() {
     }
     setView(nextView)
     setSearch('')
+  }
+
+  function showOpponentPlayers() {
+    if (!opponentPlayerTeam) return
+    setPlayerTeam(opponentPlayerTeam)
+    openView('players')
   }
 
   function goBack() {
@@ -617,6 +639,7 @@ function App() {
                           <div className="match-actions">
                             {nextVenue?.address && <a className="match-tool light" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nextVenue.address)}`} target="_blank" rel="noreferrer" aria-label="Map the fixture venue" title="Map the fixture venue"><MapPin size={16} /></a>}
                             <button className="match-tool light" onClick={() => addFixtureToCalendar(nextFixture, nextVenue?.address)} aria-label="Add next fixture to calendar" title="Add next fixture to calendar"><CalendarPlus size={16} /></button>
+                            {opponentPlayerTeam && <button className="text-action light" onClick={showOpponentPlayers}>Their players <ArrowUpRight size={15} /></button>}
                             <button className="text-action light" onClick={() => openView('fixtures')}>All fixtures <ArrowUpRight size={15} /></button>
                           </div>
                         </div>
@@ -738,6 +761,22 @@ function App() {
                 </div>
                 <span className="filter-hint">{competition === 'money' ? 'Current season' : 'Previous season archive'}</span>
               </div>
+              <div className="filter-row">
+                <div className="division-switch">{divisionPages.map((item) => <button className={activeDivision === item ? 'selected' : ''} key={item} onClick={() => chooseDivision(item)}>Div {item}</button>)}</div>
+                <label className="team-filter">
+                  <span>Team</span>
+                  <select value={teamFilter} onChange={(event) => setPlayerTeam(event.target.value)} aria-label="Filter players by team">
+                    <option value="">All teams</option>
+                    {playerTeams.map((team) => <option key={team} value={team}>{team}</option>)}
+                  </select>
+                  <ChevronDown size={15} />
+                </label>
+              </div>
+              {opponentPlayerTeam && teamFilter !== opponentPlayerTeam && (
+                <button className="opponent-shortcut" onClick={() => setPlayerTeam(opponentPlayerTeam)}>
+                  <UsersRound size={15} /><span>Next opponent: {opponentPlayerTeam}</span><ArrowUpRight size={14} />
+                </button>
+              )}
               <SearchField value={search} onChange={setSearch} placeholder="Search player or team" />
               <div className="players-list">
                 <div className="player-list-head"><span>RANK</span><span>PLAYER</span><span>TEAM</span><span>PLAYED</span><span>WON</span><span>WIN %</span></div>
